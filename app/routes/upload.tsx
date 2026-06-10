@@ -1,3 +1,5 @@
+'use client';
+
 import {type FormEvent, useState} from 'react'
 import Navbar from "~/components/Navbar";
 import FileUploader from "~/components/FileUploader";
@@ -13,12 +15,13 @@ const Upload = () => {
     const [isProcessing, setIsProcessing] = useState(false);
     const [statusText, setStatusText] = useState('');
     const [file, setFile] = useState<File | null>(null);
+    const [responseLanguage, setResponseLanguage] = useState<'english' | 'algerian'>('english');
 
     const handleFileSelect = (file: File | null) => {
         setFile(file)
     }
 
-    const handleAnalyze = async ({ companyName, jobTitle, jobDescription, file }: { companyName: string, jobTitle: string, jobDescription: string, file: File  }) => {
+    const handleAnalyze = async ({ companyName, jobTitle, jobDescription, file, responseLanguage }: { companyName: string, jobTitle: string, jobDescription: string, file: File, responseLanguage: 'english' | 'algerian' }) => {
         setIsProcessing(true);
 
         setStatusText('Uploading the file...');
@@ -48,7 +51,7 @@ const Upload = () => {
 
         const feedback = await ai.feedback(
             uploadedFile.path,
-            prepareInstructions({ jobTitle, jobDescription })
+            prepareInstructions({ jobTitle, jobDescription, responseLanguage })
         )
         if (!feedback) return setStatusText('Error: Failed to analyze resume');
 
@@ -75,7 +78,7 @@ const Upload = () => {
 
         if(!file) return;
 
-        handleAnalyze({ companyName, jobTitle, jobDescription, file });
+        handleAnalyze({ companyName, jobTitle, jobDescription, file, responseLanguage });
     }
 
     return (
@@ -106,6 +109,19 @@ const Upload = () => {
                             <div className="form-div">
                                 <label htmlFor="job-description">Job Description</label>
                                 <textarea rows={5} name="job-description" placeholder="Job Description" id="job-description" />
+                            </div>
+
+                            <div className="form-div">
+                                <label htmlFor="response-language">Response Language</label>
+                                <select
+                                    name="response-language"
+                                    id="response-language"
+                                    value={responseLanguage}
+                                    onChange={(e) => setResponseLanguage(e.target.value as 'english' | 'algerian')}
+                                >
+                                    <option value="english">English</option>
+                                    <option value="algerian">Arabic (Algerian slang)</option>
+                                </select>
                             </div>
 
                             <div className="form-div">

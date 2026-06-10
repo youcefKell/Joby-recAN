@@ -225,8 +225,13 @@ export const AIResponseFormat = `
       };
     }`;
 
-export const prepareInstructions = ({jobTitle, jobDescription}: { jobTitle: string; jobDescription: string; }) =>
-    `You are an expert in ATS (Applicant Tracking System) and resume analysis.
+export const prepareInstructions = ({jobTitle, jobDescription, responseLanguage}: { jobTitle: string; jobDescription: string; responseLanguage: 'english' | 'algerian'; }) => {
+  const languageInstruction =
+    responseLanguage === 'algerian'
+      ? 'Please write the feedback in Algerian Arabic slang while still returning strictly valid JSON.'
+      : 'Please write the feedback in English while still returning strictly valid JSON.';
+
+  return `You are an expert in ATS (Applicant Tracking System) and resume analysis.
       Please analyze and rate this resume and suggest how to improve it.
       The rating can be low if the resume is bad.
       Be thorough and detailed. Don't be afraid to point out any mistakes or areas for improvement.
@@ -235,7 +240,9 @@ export const prepareInstructions = ({jobTitle, jobDescription}: { jobTitle: stri
       If provided, take the job description into consideration.
       The job title is: ${jobTitle}
       The job description is: ${jobDescription}
+      ${languageInstruction}
       Provide the feedback using the following format:
       ${AIResponseFormat}
       Return the analysis as an JSON object, without any other text and without the backticks.
       Do not include any other text or comments.`;
+};

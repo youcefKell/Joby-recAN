@@ -1,3 +1,5 @@
+'use client';
+
 import {usePuterStore} from "~/lib/puter";
 import {useEffect} from "react";
 import {useLocation, useNavigate} from "react-router";

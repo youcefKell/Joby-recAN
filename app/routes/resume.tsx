@@ -17,6 +17,7 @@ const Resume = () => {
     const { id } = useParams();
     const [imageUrl, setImageUrl] = useState('');
     const [resumeUrl, setResumeUrl] = useState('');
+    const [responseLanguage, setResponseLanguage] = useState<'english' | 'algerian'>('english');
     const [feedback, setFeedback] = useState<Feedback | null>(null);
     const navigate = useNavigate();
 
@@ -44,8 +45,9 @@ const Resume = () => {
             const imageUrl = URL.createObjectURL(imageBlob);
             setImageUrl(imageUrl);
 
+            setResponseLanguage(data.responseLanguage || 'english');
             setFeedback(data.feedback);
-            console.log({resumeUrl, imageUrl, feedback: data.feedback });
+            console.log({resumeUrl, imageUrl, responseLanguage: data.responseLanguage, feedback: data.feedback });
         }
 
         loadResume();
@@ -75,6 +77,9 @@ const Resume = () => {
                 </section>
                 <section className="feedback-section">
                     <h2 className="text-4xl !text-black font-bold">Resume Review</h2>
+                    <p className="text-sm text-gray-600 mb-4">
+                        Response language: {responseLanguage === 'algerian' ? 'Arabic (Algerian slang)' : 'English'}
+                    </p>
                     {feedback ? (
                         <div className="flex flex-col gap-8 animate-in fade-in duration-1000">
                             <Summary feedback={feedback} />

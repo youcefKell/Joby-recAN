@@ -42,7 +42,10 @@ const Upload = () => {
             id: uuid,
             resumePath: uploadedFile.path,
             imagePath: uploadedImage.path,
-            companyName, jobTitle, jobDescription,
+            companyName,
+            jobTitle,
+            jobDescription,
+            responseLanguage,
             feedback: '',
         }
         await kv.set(`resume:${uuid}`, JSON.stringify(data));

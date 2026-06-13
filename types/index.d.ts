@@ -2,6 +2,7 @@ interface Resume {
     id: string;
     companyName?: string;
     jobTitle?: string;
+    responseLanguage?: 'english' | 'algerian';
     imagePath: string;
     resumePath: string;
     feedback: Feedback;
